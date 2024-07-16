@@ -1,0 +1,171 @@
+# Initialize inventory as a dictionary to store item details
+inventory = {}
+
+# Function to load initial inventory data from a file or database (simulation)
+def load_inventory_data():
+    # Example: Loading data from a file (assuming CSV format for simplicity)
+    try:
+        with open('inventory_data.csv', 'r') as file:
+            for line in file:
+                item_id, name, quantity, price = line.strip().split(',')
+                inventory[item_id] = {
+                    'name': name,
+                    'quantity': int(quantity),
+                    'price': float(price)
+                }
+        print("Inventory data loaded successfully.")
+    except FileNotFoundError:
+        print("No inventory data found. Starting with empty inventory.")
+    except Exception as e:
+        print(f"Error loading inventory data: {str(e)}")
+
+# Function to save inventory data to a file (simulation)
+def save_inventory_data():
+    # Example: Saving data to a file (CSV format)
+    try:
+        with open('inventory_data.csv', 'w') as file:
+            for item_id, details in inventory.items():
+                file.write(f"{item_id},{details['name']},{details['quantity']},{details['price']}\n")
+        print("Inventory data saved successfully.")
+    except Exception as e:
+        print(f"Error saving inventory data: {str(e)}")
+
+# Function to add a new item to inventory
+def add_item(item_id, name, quantity, price):
+    if item_id not in inventory:
+        inventory[item_id] = {
+            'name': name,
+            'quantity': quantity,
+            'price': price
+        }
+        print(f"Item '{name}' added to inventory.")
+    else:
+        print(f"Item with ID {item_id} already exists.")
+
+# Function to update item quantity in inventory
+def update_quantity(item_id, new_quantity):
+    if item_id in inventory:
+        inventory[item_id]['quantity'] += new_quantity
+        print(f"Quantity updated for Item ID {item_id}.")
+    else:
+        print(f"Item with ID {item_id} not found.")
+
+# Function to remove an item from inventory
+def remove_item(item_id):
+    if item_id in inventory:
+        del inventory[item_id]
+        print(f"Item with ID {item_id} removed from inventory.")
+    else:
+        print(f"Item with ID {item_id} not found.")
+
+# Function to retrieve item details from inventory
+def get_item_details(item_id):
+    if item_id in inventory:
+        return inventory[item_id]
+    else:
+        print(f"Item with ID {item_id} not found.")
+        return None
+
+# Function to list all items in inventory
+def list_inventory():
+    if inventory:
+        print("Current Inventory:")
+        for item_id, details in inventory.items():
+            print(f"Item ID: {item_id}, Name: {details['name']}, Quantity: {details['quantity']}, Price: {details['price']}")
+    else:
+        print("Inventory is empty.")
+
+# Function to calculate total inventory value
+def calculate_inventory_value():
+    total_value = 0
+    for item_id, details in inventory.items():
+        total_value += details['quantity'] * details['price']
+    return total_value
+
+# Function to simulate reorder based on inventory threshold
+def reorder_items(threshold):
+    print(f"Items to reorder (below {threshold} quantity):")
+    for item_id, details in inventory.items():
+        if details['quantity'] < threshold:
+            print(f"Item ID: {item_id}, Name: {details['name']}, Quantity: {details['quantity']}, Price: {details['price']}")
+
+# Function to simulate inventory audit (compare physical count with records)
+def perform_inventory_audit():
+    print("Performing inventory audit...")
+    # Simulate audit logic (compare physical count with inventory records)
+
+# Function to optimize storage layout (simulate rearranging inventory for efficiency)
+def optimize_storage_layout():
+    print("Optimizing storage layout...")
+    # Simulate optimization logic (rearrange inventory storage)
+
+# Function to generate inventory reports (simulate generating reports)
+def generate_inventory_reports():
+    print("Generating inventory reports...")
+    # Simulate report generation logic (generate various reports)
+
+# Main function to run the inventory management system
+def main():
+    load_inventory_data()  # Load initial inventory data
+    
+    while True:
+        print("\nInventory Management System Menu:")
+        print("1. Add Item")
+        print("2. Update Quantity")
+        print("3. Remove Item")
+        print("4. List Inventory")
+        print("5. Calculate Inventory Value")
+        print("6. Reorder Items")
+        print("7. Perform Inventory Audit")
+        print("8. Optimize Storage Layout")
+        print("9. Generate Inventory Reports")
+        print("0. Exit")
+        
+        choice = input("Enter your choice: ")
+        
+        if choice == '1':
+            item_id = input("Enter Item ID: ")
+            name = input("Enter Item Name: ")
+            quantity = int(input("Enter Quantity: "))
+            price = float(input("Enter Price: "))
+            add_item(item_id, name, quantity, price)
+            
+        elif choice == '2':
+            item_id = input("Enter Item ID to update quantity: ")
+            new_quantity = int(input("Enter Quantity to add/remove: "))
+            update_quantity(item_id, new_quantity)
+            
+        elif choice == '3':
+            item_id = input("Enter Item ID to remove: ")
+            remove_item(item_id)
+            
+        elif choice == '4':
+            list_inventory()
+            
+        elif choice == '5':
+            total_value = calculate_inventory_value()
+            print(f"Total Inventory Value: ${total_value}")
+            
+        elif choice == '6':
+            threshold = int(input("Enter reorder threshold quantity: "))
+            reorder_items(threshold)
+            
+        elif choice == '7':
+            perform_inventory_audit()
+            
+        elif choice == '8':
+            optimize_storage_layout()
+            
+        elif choice == '9':
+            generate_inventory_reports()
+            
+        elif choice == '0':
+            save_inventory_data()  # Save inventory data before exiting
+            print("Exiting Inventory Management System.")
+            break
+            
+        else:
+            print("Invalid choice. Please enter a valid option.")
+
+if __name__ == "__main__":
+    main()
