@@ -1,0 +1,46 @@
+import requests
+
+def get_covid_stats(region, api_key):
+    base_url =  "https://covid-193.p.rapidapi.com"
+    headers = {
+        "x-rapidapi-host": "covid-193.p.rapidapi.com",
+        "x-rapidapi-key": api_key
+    }
+    
+    if region.lower() == 'world':
+        endpoint = "/statistics"
+        params = {}
+    else:
+        endpoint = "/statistics"
+        params = {"country": region}
+    
+    try:
+        response = requests.get(f"{base_url}{endpoint}", headers=headers, params=params)
+        response.raise_for_status()  # Raise exception for bad response status
+        
+        covid_data = response.json()
+        return covid_data
+    
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching COVID-19 data: {e}")
+        return None
+
+def display_covid_stats(region, covid_data):
+    if covid_data and 'response' in covid_data and len(covid_data['response']) > 0:
+        data = covid_data['response'][0]
+        print(f"COVID-19 Statistics for {region.capitalize()}:")
+        print(f"Total Cases: {data.get('cases', 'N/A')}")
+        print(f"Total Recoveries: {data.get('recovered', 'N/A')}")
+        print(f"Total Deaths: {data.get('deaths', 'N/A')}")
+    else:
+        print("No data available to display.")
+
+def main():
+    api_key = "c27f395d3cmshb75a2d9baea6580p1e7005jsn43de63d863fd"
+    region = input("Enter the region (country or 'world' for global statistics): ")
+    
+    covid_data = get_covid_stats(region, api_key)
+    display_covid_stats(region, covid_data)
+
+if __name__ == "__main__":
+    main()
